@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_frag"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.rega9.HomeFragment"
+        android:label="Inicio" />
+    <fragment
+        android:id="@+id/bluetooth"
+        android:name="com.example.rega9.blueFrag"
+        android:label="Bluetooth"/>
+
+    <fragment
+        android:id="@+id/temperatura"
+        android:name="com.example.rega9.view.temperaturaFrag"
+        android:label="Temperatura"
+        tools:layout="@layout/fragment_temperatura" />
+
+    <fragment
+        android:id="@+id/temporizador"
+        android:name="com.example.rega9.view.TemporizadorFrag"
+        android:label="Temporizador" />
+
+    <fragment
+        android:id="@+id/graficas"
+        android:name="com.example.rega9.graficasFrag"
+        android:label="Graficas" />
+</navigation>

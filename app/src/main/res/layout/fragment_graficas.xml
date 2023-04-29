@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:layout_width="195dp"
+        android:layout_height="63dp"
+        android:text="Cantidad de awa utilizada (en Lts.)"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.077" />
+
+    <org.eazegraph.lib.charts.ValueLineChart
+        android:id="@+id/IdLineChartAwa"
+        android:layout_width="414dp"
+        android:layout_height="399dp"
+        app:egCurveSmoothness="0.4"
+        app:egIndicatorLineColor="#FA0C0C"
+        app:egLegendHeight="40dp"
+        app:egShowStandardValue="true"
+        app:egUseCubic="true"
+        app:egUseOverlapFill="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.466">
+
+    </org.eazegraph.lib.charts.ValueLineChart>
+
+    <Button
+        android:id="@+id/IdBtnAwa"
+        android:layout_width="169dp"
+        android:layout_height="57dp"
+        android:text="Num aleatorio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.878" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

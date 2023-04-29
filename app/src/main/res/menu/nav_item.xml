@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Funciones"
+        >
+        <menu>
+            <item
+                android:id="@+id/homeFragment"
+                android:title="Inicio"
+                android:icon="@drawable/ic_home"
+                />
+
+            <item
+                android:id="@+id/bluetooth"
+                android:title="Bluetooth"
+                android:icon="@drawable/bluetooth"
+                />
+
+            <item
+                android:id="@+id/temperatura"
+                android:title="Temperatura"
+                android:icon="@drawable/temperatura"
+                />
+
+            <item
+                android:id="@+id/temporizador"
+                android:title="Temporizador"
+                android:icon="@drawable/reloj"
+                />
+
+            <item
+                android:id="@+id/graficas"
+                android:title="Graficas"
+                android:icon="@drawable/grafico"
+                />
+
+        </menu>
+
+    </item>
+
+
+    <!--<item
+        android:title="@string/other"
+        >
+        <menu>
+            <item
+                android:title="Contacts Us"
+                android:icon="@drawable/ic_contactus"
+                />
+            <item
+                android:title="Private Policy"
+                android:icon="@drawable/ic_policy"
+                />
+            <item
+                android:title="Setting"
+                android:icon="@drawable/ic_settings"
+                />
+
+        </menu>
+    </item>-->
+
+
+</menu>
