@@ -1,32 +1,16 @@
 package com.example.rega9.view
 
-import android.Manifest
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
-import android.bluetooth.BluetoothSocket
-import android.content.Context
-import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.rega9.R
-import com.example.rega9.bluetoothIn
-import com.example.rega9.handlerState
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.*
+
 
 class TemporizadorFrag : Fragment() {
 
@@ -39,6 +23,7 @@ class TemporizadorFrag : Fragment() {
     private var timeInMillis: Long = 0
     private var isTimerRunning = false
     private lateinit var mediaPlayer: MediaPlayer
+    private var timeRemaining: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +51,8 @@ class TemporizadorFrag : Fragment() {
         timerTextView = view.findViewById(R.id.timerTextView)
         //
         // spinner = view.findViewById(R.id.timerSpinner)
-        mediaPlayer = MediaPlayer.create(requireContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+        mediaPlayer =
+            MediaPlayer.create(requireContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
 
         // Configurar el adaptador del Spinner
         val times = arrayOf("10 segundos", "5 minutos", "10 minutos", "20 minutos", "30 minutos")
@@ -77,26 +63,41 @@ class TemporizadorFrag : Fragment() {
         startButton.setOnClickListener { startTimer() }
         pauseButton.setOnClickListener { pauseTimer() }
         stopButton.setOnClickListener { stopTimer() }
-
-
     }
 
     private fun startTimer() {
         if (!isTimerRunning) {
             val timeText = timerEditText.text.toString()
             if (timeText.isNotEmpty()) {
-                val timeInSeconds = timeText.toInt() * 1000
-                countDownTimer = object : CountDownTimer(timeInSeconds.toLong(), 1000) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        timeInMillis = millisUntilFinished
-                        updateTimerText()
-                    }
+                val timeInMinutes = timeText.toInt() * 60 * 1000
 
-                    override fun onFinish() {
-                        playAlarm()
-                        stopTimer()
+                // Si hay tiempo restante, se inicia el temporizador con ese tiempo
+                if (timeRemaining > 0) {
+                    countDownTimer = object : CountDownTimer(timeRemaining, 1000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            timeInMillis = millisUntilFinished
+                            updateTimerText()
+                        }
+
+                        override fun onFinish() {
+                            playAlarm()
+                            stopTimer()
+                        }
+                    }
+                } else {
+                    countDownTimer = object : CountDownTimer(timeInMinutes.toLong(), 1000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            timeInMillis = millisUntilFinished
+                            updateTimerText()
+                        }
+
+                        override fun onFinish() {
+                            playAlarm()
+                            stopTimer()
+                        }
                     }
                 }
+
                 countDownTimer.start()
                 isTimerRunning = true
                 updateButtons()
@@ -108,7 +109,9 @@ class TemporizadorFrag : Fragment() {
         if (isTimerRunning) {
             countDownTimer.cancel()
             isTimerRunning = false
+            timeRemaining = timeInMillis // Almacena el tiempo restante
             updateButtons()
+            startButton.text = "Reanudar"
         }
     }
 
@@ -125,7 +128,7 @@ class TemporizadorFrag : Fragment() {
     private fun updateTimerText() {
         val minutes = (timeInMillis / 1000) / 60
         val seconds = (timeInMillis / 1000) % 60
-        timerTextView.setText("%02d:%02d".format(minutes, seconds))
+        timerTextView.text = "%02d:%02d".format(minutes, seconds)
     }
 
     private fun updateButtons() {
