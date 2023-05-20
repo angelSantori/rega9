@@ -90,7 +90,7 @@ class graficasFrag : Fragment() {
 
         // Agregar puntos a la gráfica
         val ValSeriesAwa = ValueLineSeries()
-        ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_400)
+        ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_900)
         for (i in ListStrHora!!.indices) {
             ValSeriesAwa.addPoint(ValueLinePoint(ListStrHora!![i], ListValAwa!![i]))
         }
@@ -115,7 +115,7 @@ class graficasFrag : Fragment() {
             ListValAwa!!.add(ValAwa)
 
             val ValSeriesAwa = ValueLineSeries()
-            ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_400)
+            ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_900)
 
             if (ListStrHora!!.size > 0) { for (i in ListStrHora!!.indices) {
                 ValSeriesAwa.addPoint(ValueLinePoint(ListStrHora!![i], ListValAwa!![i]))
