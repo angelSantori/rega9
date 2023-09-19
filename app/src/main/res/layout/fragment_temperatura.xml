@@ -7,59 +7,62 @@
     android:layout_height="match_parent"
     tools:context=".view.temperaturaFrag">
 
+
+    <!---
+        android:max="45" Poner valor maximo que alcance la resistencia a calentar
+        android:min="15" Poner el valor minimo que tenga el agua
+     -->
+
     <Button
         android:id="@+id/btnDefTempe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Definir temperatura"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.726" />
-
+        app:layout_constraintVertical_bias="0.911" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Define la Temperatura"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.603"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.626" />
+        app:layout_constraintVertical_bias="0.727" />
 
     <SeekBar
         android:id="@+id/seekBarTemp"
         android:layout_width="385dp"
         android:layout_height="63dp"
-        android:rotation="0"
-        android:rotationX="0"
         android:max="45"
         android:min="15"
+        android:rotation="0"
+        android:rotationX="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.52" />
-    <!---
-        android:max="45" Poner valor maximo que alcance la resistencia a calentar
-        android:min="15" Poner el valor minimo que tenga el agua
-     -->
+        app:layout_constraintVertical_bias="0.531" />
 
     <TextView
         android:id="@+id/txtTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="15"
-        android:textSize="60sp"
+        android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/seekBarTemp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintHorizontal_bias="0.546"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.66" />
@@ -72,10 +75,10 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toTopOf="@+id/seekBarTemp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintHorizontal_bias="0.62"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintVertical_bias="0.495" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
