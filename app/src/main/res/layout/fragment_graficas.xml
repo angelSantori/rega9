@@ -43,7 +43,7 @@
         android:id="@+id/IdBtnAwa"
         android:layout_width="169dp"
         android:layout_height="57dp"
-        android:text="Num aleatorio"
+        android:text="Registrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.458"

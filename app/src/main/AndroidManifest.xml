@@ -18,10 +18,11 @@
         android:fullBackupContent="@xml/backup_rules"
         android:label="RegaTec"
         android:icon="@mipmap/logo_modificado_cuatro"
-        android:roundIcon="@mipmap/logo_modificado_cuatro"
+        android:roundIcon="@mipmap/logo_modificado_tres"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rega9"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
