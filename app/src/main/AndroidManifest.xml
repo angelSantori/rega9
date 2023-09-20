@@ -17,8 +17,8 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:label="RegaTec"
-        android:icon="@mipmap/logo_modificado_cuatro"
-        android:roundIcon="@mipmap/logo_modificado_tres"
+        android:icon="@drawable/logo_modificado_cuatro"
+        android:roundIcon="@drawable/logo_modificado_cuatro_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rega9"
         tools:targetApi="31">
