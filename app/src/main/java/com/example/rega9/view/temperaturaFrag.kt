@@ -3,6 +3,7 @@ package com.example.rega9.view
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -78,6 +79,12 @@ class temperaturaFrag : Fragment() {
                 //MyConexionBT?.write(mensaje_2) // otra manera de enviar datos
                 sendCommand(mensaje_2) //pero con esta se envia de una manera mas rapida
                 Log.d(ContentValues.TAG, "<<<<<<<< --------------- ENVIANDO UN MENSAJE ------------------->>>>>>>>>")
+
+                // Agrega un retraso de 2 segundos (2000 milisegundos) antes de habilitar el botón nuevamente
+                btnDefTempe.isEnabled = false
+                Handler().postDelayed({
+                    btnDefTempe.isEnabled = true
+                }, 2000)
             }
         }
     }
