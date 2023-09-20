@@ -16,8 +16,15 @@ import java.text.SimpleDateFormat
 
 
 import android.database.Cursor
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
 import com.example.rega9.R
 import com.example.rega9.view.MyDatabaseHelper
+import java.io.IOException
 import java.util.*
 
 
@@ -32,6 +39,8 @@ class graficasFrag : Fragment() {
     //Sqlite
     private lateinit var dbHelper: MyDatabaseHelper
     //-----------------------------------------------
+
+    private val recDataString = StringBuilder()
 
     companion object {
         fun newInstance(): graficasFrag {
@@ -97,45 +106,112 @@ class graficasFrag : Fragment() {
         IdLineChartAwa.clearChart()
         IdLineChartAwa.addSeries(ValSeriesAwa)
 
-        IdBtnAwa.setOnClickListener {
+        //------------------------------------------------------------------------------------------Aqui se reciben los datos que envía ESP32
+        var txtRecibe = view.findViewById<TextView>(R.id.txtRecibe)
+        var conStringToFloat = txtRecibe.text.toString()
+        var registroAgua = conStringToFloat.toFloat()
 
-            val currentTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-            val ValAwa = (Math.random() * 50).toFloat() + 1
+        bluetoothIn = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                if (msg.what == handlerState) {
+                    val readMessage = msg.obj as String
 
-            // Insertar registro en la base de datos
-            val db = dbHelper.writableDatabase
-            val values = ContentValues().apply {
-                put("time", currentTime)
-                put("value", ValAwa)
-            }
-            db.insert("data", null, values)
+                    recDataString.append(readMessage)
 
-            // Agregar punto a la gráfica
-            ListStrHora!!.add(currentTime)
-            ListValAwa!!.add(ValAwa)
+                    val endOfLineIndex: Int = recDataString.indexOf("#")
+                    if (endOfLineIndex > 0) {
 
-            val ValSeriesAwa = ValueLineSeries()
-            ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_900)
+                        // Log.i("recDataString -> -> ", recDataString.toString())
+                        val dataInPrint: String = recDataString.substring(0, endOfLineIndex)
+                        txtRecibe.setText("$dataInPrint")
+                        conStringToFloat = txtRecibe.text.toString()
+                        registroAgua = conStringToFloat.toFloat()
 
-            if (ListStrHora!!.size > 0) { for (i in ListStrHora!!.indices) {
-                ValSeriesAwa.addPoint(ValueLinePoint(ListStrHora!![i], ListValAwa!![i]))
-            }
-            }
-
-            IdLineChartAwa.clearChart()
-            IdLineChartAwa.addSeries(ValSeriesAwa)
-
-            // Limitar el número de puntos en la gráfica
-            if (ListStrHora!!.size > DataLimite) {
-                ListStrHora!!.removeAt(0)
-                ListValAwa!!.removeAt(0)
+                        recDataString.delete(0, recDataString.length)
+                    }
+                }
             }
         }
-        //----------------------------
+        //------------------------------------------------------------------------------------------Aqui se reciben los datos que envía ESP32
+
+
+        IdBtnAwa.setOnClickListener {
+            if (txtRecibe.text.equals("0") or txtRecibe.text.equals("0.0") or txtRecibe.text.equals("0.00")) {
+                Toast.makeText(requireContext(), "Registro es 0", Toast.LENGTH_LONG).show()
+            } else {
+                //----------------------------------------------------------------------------------------------Envio de datos 0 para que se cumpla la condicion--------------------------------------
+                var mensaje_2: String = "0"
+                sendCommand(mensaje_2)
+                //----------------------------------------------------------------------------------------------Envio de datos 0 para que se cumpla la condicion--------------------------------------
+
+
+                //-------------------------------------------------------------------------------------- Agrega un retraso de 2 segundos (2000 milisegundos) antes de habilitar el botón nuevamente
+                IdBtnAwa.isEnabled = false
+                Handler().postDelayed({
+                    IdBtnAwa.isEnabled = true
+                }, 5000)
+                //-------------------------------------------------------------------------------------- Agrega un retraso de 2 segundos (2000 milisegundos) antes de habilitar el botón nuevamente
+
+
+                val currentTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
+                //val ValAwa = (Math.random() * 50).toFloat() + 1
+
+                /*if (registroAgua != null) {
+                    // El valor se convirtió correctamente a float
+                    // Puedes usar valorFloat para realizar operaciones
+                } else {
+                    // El texto no se pudo convertir a float, manejar el caso de error si es necesario
+                }*/
+
+
+                //-------------------------------------------------------------------------------------- Insertar registro en la base de datos
+                val db = dbHelper.writableDatabase
+                val values = ContentValues().apply {
+                    put("time", currentTime)
+                    put("value", registroAgua)
+                    //put("value", ValAwa) Se sustituyo el valor random generado
+                }
+                db.insert("data", null, values)
+                //-------------------------------------------------------------------------------------- Insertar registro en la base de datos
+
+                // Agregar punto a la gráfica
+                ListStrHora!!.add(currentTime)
+                ListValAwa!!.add(registroAgua)
+                //ListValAwa!!.add(ValAwa)
+
+                val ValSeriesAwa = ValueLineSeries()
+                ValSeriesAwa.color = ContextCompat.getColor(requireContext(), R.color.md_blue_900)
+
+                if (ListStrHora!!.size > 0) {
+                    for (i in ListStrHora!!.indices) {
+                        ValSeriesAwa.addPoint(ValueLinePoint(ListStrHora!![i], ListValAwa!![i]))
+                    }
+                }
+
+                IdLineChartAwa.clearChart()
+                IdLineChartAwa.addSeries(ValSeriesAwa)
+
+                // Limitar el número de puntos en la gráfica
+                if (ListStrHora!!.size > DataLimite) {
+                    ListStrHora!!.removeAt(0)
+                    ListValAwa!!.removeAt(0)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         dbHelper.close() // Cerrar la conexión de la base de datos al destruir el fragmento
+    }
+
+    private fun sendCommand(input: String) {
+        if (blueFrag.m_bluetoothSocket != null) {
+            try {
+                blueFrag.m_bluetoothSocket!!.outputStream.write(input.toByteArray())
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 }

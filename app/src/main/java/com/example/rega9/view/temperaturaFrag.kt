@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothSocket
 import android.content.ContentValues
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.rega9.R
 import com.example.rega9.blueFrag
+import com.example.rega9.bluetoothIn
+import com.example.rega9.handlerState
 import org.eazegraph.lib.charts.ValueLineChart
 import java.io.IOException
 import java.util.*
@@ -52,6 +56,7 @@ class temperaturaFrag : Fragment() {
         var btnDefTempe = view.findViewById<Button>(R.id.btnDefTempe)
         var txtTemp = view.findViewById<TextView>(R.id.txtTemp)
         var barraTemp = view.findViewById<SeekBar>(R.id.seekBarTemp)
+
 
         barraTemp.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
