@@ -2,10 +2,9 @@ package com.example.rega9.view
 
 import android.bluetooth.BluetoothSocket
 import android.content.ContentValues
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.os.*
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,6 +25,8 @@ import java.util.*
 class temperaturaFrag : Fragment() {
     private var startPoint = 0
     private var endpoint = 0
+    private var mediaPlayer: MediaPlayer? = null
+    private var timer: CountDownTimer? = null
 
     companion object {
         var m_myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -56,6 +57,10 @@ class temperaturaFrag : Fragment() {
         var btnDefTempe = view.findViewById<Button>(R.id.btnDefTempe)
         var txtTemp = view.findViewById<TextView>(R.id.txtTemp)
         var barraTemp = view.findViewById<SeekBar>(R.id.seekBarTemp)
+        var btnDuchaMilitar = view.findViewById<Button>(R.id.btnDuchaMilitar)
+        mediaPlayer =
+            MediaPlayer.create(requireContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+
 
 
         barraTemp.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -92,6 +97,62 @@ class temperaturaFrag : Fragment() {
                 }, 2000)
             }
         }
+
+        btnDuchaMilitar.setOnClickListener {
+            startTimer()
+        }
+    }
+
+    private fun startTimer() {
+        // Verifica si mediaPlayer se ha inicializado antes de usarlo
+        if (mediaPlayer != null) {
+            // Inicia un temporizador de 1.5 minutos (90,000 ms)
+            timer = object : CountDownTimer(90000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    // No se muestra el tiempo restante
+                }
+
+                override fun onFinish() {
+                    // Cuando termina el temporizador, reproduce el sonido durante 10 segundos
+                    mediaPlayer?.start()
+                    // Establece otro temporizador de 1.5 minutos para volver a sonar
+                    startSecondTimer()
+                }
+            }
+
+            (timer as CountDownTimer).start()
+        } else {
+            // mediaPlayer no se ha inicializado, maneja el error adecuadamente
+        }
+    }
+
+    private fun startSecondTimer() {
+        // Verifica si mediaPlayer se ha inicializado antes de usarlo
+        if (mediaPlayer != null) {
+            // Inicia un segundo temporizador de 1.5 minutos (90,000 ms)
+            timer = object : CountDownTimer(90000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    // No se muestra el tiempo restante
+                }
+
+                override fun onFinish() {
+                    // Cuando termina el segundo temporizador, reproduce el sonido nuevamente
+                    mediaPlayer?.start()
+                    // Puedes repetir este proceso si deseas que el sonido siga sonando
+                }
+            }
+
+            (timer as CountDownTimer).start()
+        } else {
+            // mediaPlayer no se ha inicializado, maneja el error adecuadamente
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Asegúrate de detener el temporizador y liberar los recursos cuando el fragmento se destruya
+        timer?.cancel()
+        mediaPlayer?.release()
     }
 
     private fun sendCommand(input: String) {
